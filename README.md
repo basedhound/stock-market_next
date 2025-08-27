@@ -45,7 +45,6 @@ If you're getting started and need assistance or face any bugs, join our active 
 <a href="https://discord.com/invite/n6EdbFJ" target="_blank"><img src="https://github.com/sujatagunale/EasyRead/assets/151519281/618f4872-1e10-42da-8213-1d69e486d02e" /></a>
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
-- **[Arcjet](https://arcjet.com/)** is a developer-first security toolkit for Node.js and Next.js applications. It provides protections like bot detection, rate limiting, email validation, and form attack mitigation with minimal setup.
 
 - **[Better Auth](https://www.better-auth.com/)** is a framework-agnostic authentication and authorization library for TypeScript. It provides built-in support for email/password login, social sign-on (Google, GitHub, Apple, and more), and multi-factor authentication, simplifying user authentication and account management.
 
@@ -116,10 +115,29 @@ npm install
 Create a new file named `.env` in the root of your project and add the following content:
 
 ```env
+NODE_ENV='development'
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
+# FINNHUB
+NEXT_PUBLIC_NEXT_PUBLIC_FINNHUB_API_KEY=
+FINNHUB_BASE_URL=https://finnhub.io/api/v1
+
+# MONGODB
+MONGODB_URI=
+
+# BETTER AUTH
+BETTER_AUTH_SECRET=
+BETTER_AUTH_URL=http://localhost:3000 
+
+# GEMINI
+GEMINI_API_KEY=
+
+#NODEMAILER
+NODEMAILER_EMAIL=
+NODEMAILER_PASSWORD=
 ```
 
-Replace the placeholder values with your real credentials. You can get these by signing up at: [**MongoDB**](https://jsm.dev/example), [**Arcjet**](https://jsm.dev/example), [**Ingest**](https://jsm.dev/example).
+Replace the placeholder values with your real credentials. You can get these by signing up at: [**MongoDB**](https://jsm.dev/example), [**Ingest**](https://jsm.dev/example).
 
 **Running the Project**
 
