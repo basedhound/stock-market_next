@@ -2,6 +2,7 @@
 
 import { auth } from "@/lib/better-auth/auth";
 import { inngest } from "@/lib/inngest/client";
+import { headers } from "next/headers";
 
 export const signUpWithEmail = async (data: SignUpFormData) => {
   try {
@@ -38,3 +39,15 @@ export const signUpWithEmail = async (data: SignUpFormData) => {
   }
 };
 
+export const signOut = async () => {
+  try {
+    // Better Auth API call - handles session cleanup and cookie clearing
+    await auth.api.signOut({
+      headers: await headers()  // Pass request headers for cookie access
+    });
+  
+  } catch (error) {
+    console.error('Sign out failed:', error);
+    return { success: false, error: 'Sign out failed' };
+  }
+};
