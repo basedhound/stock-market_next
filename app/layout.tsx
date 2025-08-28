@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Signalist',
+  title: "Signalist",
   description:
-    'A dynamic web application where users can track real-time stock prices, get personalized alerts, explore detailed company insights, and manage their watchlists.',
+    "A dynamic web application where users can track real-time stock prices, get personalized alerts, explore detailed company insights, and manage their watchlists.",
 };
 
 export default function RootLayout({
@@ -24,12 +25,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-<html lang='en' className='dark'>
+    <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
+        <Toaster />
       </body>
- </html>
+    </html>
   );
 }

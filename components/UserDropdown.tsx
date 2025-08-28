@@ -14,18 +14,13 @@ import { ChevronDown, LogOut } from 'lucide-react';
 import { NavItems } from './NavItems';
 import { useRouter } from 'next/navigation';
 
-export const UserDropdown = () => {
+export const UserDropdown = ({ user }: { user: User }) => {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    // Signout function here
+    // Signout function here later
     console.log('Sign out');
     router.push('/sign-in');
-  };
-
-  const user = {
-    name: 'John',
-    email: 'user@example.com',
   };
 
   return (
