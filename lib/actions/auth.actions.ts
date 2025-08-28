@@ -51,3 +51,20 @@ export const signOut = async () => {
     return { success: false, error: 'Sign out failed' };
   }
 };
+
+export const signInWithEmail = async (data: SignInFormData) => {
+  try {
+    // Better Auth API call - handles credential validation and session creation
+    const response = await auth.api.signInEmail({
+      body: {
+        email: data.email,
+        password: data.password,  // Better Auth verifies against stored hash
+      }
+    });
+    
+    return { success: true, data: response };
+  } catch (error) {
+    console.error('Sign in failed:', error);
+    return { success: false, error: 'Invalid email or password. Please try again.' };
+  }
+};
