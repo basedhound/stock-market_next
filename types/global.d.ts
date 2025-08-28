@@ -1,4 +1,32 @@
 declare global {
+  interface SignInFormData {
+    email: string;
+    password: string;
+  }
+
+  type SignUpFormData = {
+    fullName: string;
+    email: string;
+    password: string;
+    country: string;
+    investmentGoals: string;
+    riskTolerance: string;
+    preferredIndustry: string;
+  };
+
+  interface WelcomeEmailData {
+    email: string;
+    name: string;
+    intro: string;
+  }
+
+  type User = {
+    id: string;
+    name: string;
+    email: string;
+  };
+
+  //
   type StockData = {
     symbol: string;
     company: string;
@@ -36,10 +64,6 @@ declare global {
     image: string;
   };
 
-  type MarketNewsProps = {
-    news: MarketNewsArticle[];
-  };
-
   type WatchlistNewsProps = {
     watchlistSymbols?: string[]; // Array of stock symbols to fetch news for
     watchlistStocks?: StockWithData[]; // Array of watchlist stocks with full data
@@ -56,10 +80,6 @@ declare global {
     className?: string;
   };
 
-  type WatchlistTableProps = {
-    items: StockWithData[];
-  };
-
   type AlertFormData = {
     alertName: string;
     alertType: 'price' | 'volume';
@@ -67,31 +87,30 @@ declare global {
     threshold: string;
   };
 
-  type AlertData ={
+  type AlertData = {
     alertName: string;
     symbol: string;
     alertType: 'price' | 'volume';
     condition: 'greater' | 'less';
     threshold: number;
-  }
+  };
 
   type AlertModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
-  symbol: string;
-  company: string;
-  currentPrice?: number;
-  alertId?: string;
-  onCreateAlert?: (alertData: AlertData) => Promise<void>;
-  initialValues?: {
-    alertName?: string;
-    alertType?: 'price' | 'volume';
-    condition?: 'greater' | 'less';
-    threshold?: number;
+    isOpen: boolean;
+    onClose: () => void;
+    symbol: string;
+    company: string;
+    currentPrice?: number;
+    alertId?: string;
+    onCreateAlert?: (alertData: AlertData) => Promise<void>;
+    initialValues?: {
+      alertName?: string;
+      alertType?: 'price' | 'volume';
+      condition?: 'greater' | 'less';
+      threshold?: number;
+    };
+    action?: string;
   };
-  action?: string;
-}
-  
 
   type RecommendationData = {
     strongBuy: number;
@@ -102,8 +121,6 @@ declare global {
     period: string;
     symbol: string;
   };
-
-  type RecommendationsResponse = RecommendationData[];
 
   type RawNewsArticle = {
     id: number;
@@ -166,21 +183,6 @@ declare global {
     open: boolean;
   };
 
-  type SignUpFormData = {
-    fullName: string;
-    email: string;
-    country: string;
-    password: string;
-    investmentGoals: string;
-    riskTolerance: string;
-    preferredIndustry: string;
-  };
-
-  type SignInFormData = {
-    email: string;
-    password: string;
-  };
-
   type Stock = {
     symbol: string;
     name: string;
@@ -232,11 +234,11 @@ declare global {
   };
 
   type FinnhubSearchResult = {
-  symbol: string;
-  description: string;
-  displaySymbol?: string;
-  type: string;
-}
+    symbol: string;
+    description: string;
+    displaySymbol?: string;
+    type: string;
+  };
 }
 
 export {};
