@@ -48,7 +48,7 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 - **[Better Auth](https://www.better-auth.com/)** is a framework-agnostic authentication and authorization library for TypeScript. It provides built-in support for email/password login, social sign-on (Google, GitHub, Apple, and more), and multi-factor authentication, simplifying user authentication and account management.
 
-- **[Inngest](https://www.inngest.com/)** is a platform for event-driven workflows and background jobs. It allows developers to build reliable, scalable automated processes such as real-time alerts, notifications, and AI-powered workflows.
+- **[Inngest](https://jsm.dev/stocks-inggest)** is a platform for event-driven workflows and background jobs. It allows developers to build reliable, scalable automated processes such as real-time alerts, notifications, and AI-powered workflows.
 
 - **[MongoDB](https://www.mongodb.com/)** is a flexible, high-performance NoSQL database. It stores data in JSON-like documents, supports dynamic schemas, and provides robust features for scalability, replication, and querying.
 
@@ -60,6 +60,7 @@ If you're getting started and need assistance or face any bugs, join our active 
 
 - **[TypeScript](https://www.typescriptlang.org/)** is a statically typed superset of JavaScript that improves code quality, tooling, and error detection. It is ideal for building large-scale applications and enhances maintainability.
 
+Add Finnhub, Coderabbit
 
 
 ## <a name="features">🔋 Features</a>
@@ -137,7 +138,7 @@ NODEMAILER_EMAIL=
 NODEMAILER_PASSWORD=
 ```
 
-Replace the placeholder values with your real credentials. You can get these by signing up at: [**MongoDB**](https://jsm.dev/example), [**Ingest**](https://jsm.dev/example).
+Replace the placeholder values with your real credentials. You can get these by signing up at: [**MongoDB**](https://www.mongodb.com/products/platform/atlas-database), [**Gemini**](https://aistudio.google.com/prompts/new_chat?utm_source=chatgpt.com), [**Ingest**](https://jsm.dev/stocks-inggest), [**Finnhub**](https://finnhub.io).
 
 **Running the Project**
 

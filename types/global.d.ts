@@ -1,5 +1,5 @@
 declare global {
-  type SignInFormData = {
+  interface SignInFormData {
     email: string;
     password: string;
   }
@@ -89,7 +89,6 @@ declare global {
     description: string;
     displaySymbol?: string;
     type: string;
-    exchange: string;
   };
 
   type FinnhubSearchResponse = {

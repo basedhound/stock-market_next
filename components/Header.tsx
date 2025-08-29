@@ -1,25 +1,27 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { NavItems } from './NavItems';
-import { UserDropdown } from './UserDropdown';
+import Link from "next/link";
+import Image from "next/image";
+import { NavItems } from "./NavItems";
+import { UserDropdown } from "./UserDropdown";
+import { searchStocks } from "@/lib/actions/finnhub.actions";
 
-export const Header = ({ user }: { user: User }) => {
+export const Header = async ({ user }: { user: User }) => {
+  const initialStocks = await searchStocks();
   return (
-    <header className='sticky top-0 header'>
-      <div className='container header-wrapper'>
-        <Link href='/'>
+    <header className="sticky top-0 header">
+      <div className="container header-wrapper">
+        <Link href="/">
           <Image
-            src='/assets/icons/logo.svg'
-            alt='Signalist'
+            src="/assets/icons/logo.svg"
+            alt="Signalist"
             width={140}
             height={32}
-            className='h-8 w-auto cursor-pointer'
+            className="h-8 w-auto cursor-pointer"
           />
         </Link>
-        <nav className='hidden sm:block'>
-          <NavItems />
+        <nav className="hidden sm:block">
+          <NavItems initialStocks={initialStocks} />
         </nav>
-        <UserDropdown user={user} />
+        <UserDropdown user={user} initialStocks={initialStocks} />
       </div>
     </header>
   );

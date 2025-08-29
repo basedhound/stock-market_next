@@ -2,6 +2,7 @@
 
 import { cache } from 'react';
 import { formatArticle, getTodayString, validateArticle } from '../utils';
+import { POPULAR_STOCK_SYMBOLS } from '../constants';
 
 const FINNHUB_BASE_URL = process.env.FINNHUB_BASE_URL!;
 const FINNHUB_API_KEY = process.env.NEXT_PUBLIC_FINNHUB_API_KEY!;
@@ -83,5 +84,70 @@ export const getNews = cache(async (symbols?: string[]) => {
   } catch (error) {
     console.error('Error fetching news:', error);
     throw new Error('Failed to fetch news');
+  }
+});
+
+// Searches for stocks by symbol or company name
+// 1. No query → Returns popular stocks (AAPL, MSFT, etc.)
+// 2. With query → Searches Finnhub database for matches
+export const searchStocks = cache(async (query?: string) => {
+  const cleanQuery = query?.trim();
+  
+  try {
+    let allResults: FinnhubSearchResult[] = [];
+
+    // Use profile API for popular stocks (better rate limits)
+    if (!cleanQuery) {
+      const popularStocks = POPULAR_STOCK_SYMBOLS.slice(0, 10).map(
+        async (symbol) => {
+          try {
+            const profileData = await fetchJSON(
+              `${FINNHUB_BASE_URL}/stock/profile2?symbol=${symbol}&token=${FINNHUB_API_KEY}`,
+              3600
+            );
+
+            // Convert profile data to search result format
+            if (profileData && profileData.name) {
+              allResults.push({
+                symbol: symbol,
+                description: profileData.name,
+                displaySymbol: symbol,
+                type: 'Common Stock'
+              });
+            }
+          } catch (error) {
+            console.warn(`Failed to get profile for ${symbol}:`, error);
+          }
+        }
+      );
+
+      await Promise.all(popularStocks);
+    } else {
+      // Search specific stock
+      const searchData = (await fetchJSON(
+        `${FINNHUB_BASE_URL}/search?q=${encodeURIComponent(
+          cleanQuery
+        )}&token=${FINNHUB_API_KEY}`,
+        1800
+      )) as FinnhubSearchResponse;
+
+      allResults = searchData?.result || [];
+    }
+
+    // Format search results
+    const results = allResults?.slice(0, 15)?.map(
+      (stock: FinnhubSearchResult): StockWithWatchlistStatus => ({
+        symbol: stock.symbol.toUpperCase(),
+        name: stock.description,
+        exchange: stock.displaySymbol ? stock.displaySymbol : 'US',
+        type: stock.type || 'Stock',
+        isInWatchlist: false,
+      })
+    );
+
+    return results || [];
+  } catch (error) {
+    console.error('Error in stock search:', error);
+    return [];
   }
 });
