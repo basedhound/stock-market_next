@@ -1,4 +1,4 @@
-export const NAV_ITEMS = [
+ export const NAV_ITEMS = [
   { href: '/', label: 'Dashboard' },
   { href: '/search', label: 'Search' },
   { href: '/watchlist', label: 'Watchlist' },
@@ -232,3 +232,5 @@ export const POPULAR_STOCK_SYMBOLS = [
   'GRAB',
   'SE',
 ];
+
+export const NO_MARKET_NEWS = '<p class="mobile-text" style="margin:0 0 20px 0;font-size:16px;line-height:1.6;color:#4b5563;">No market news available today. Please check back tomorrow.</p>'
