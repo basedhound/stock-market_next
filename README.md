@@ -143,6 +143,7 @@ Replace the placeholder values with your real credentials. You can get these by 
 
 ```bash
 npm run dev
+npx inngest-cli@latest dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser to view the project.
