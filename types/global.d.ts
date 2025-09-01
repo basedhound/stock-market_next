@@ -1,5 +1,5 @@
 declare global {
-  interface SignInFormData {
+  type SignInFormData = {
     email: string;
     password: string;
   }
@@ -89,12 +89,19 @@ declare global {
     description: string;
     displaySymbol?: string;
     type: string;
+    exchange: string;
   };
 
   type FinnhubSearchResponse = {
     count: number;
     result: FinnhubSearchResult[];
   };
+
+  type StockDetailsPageProps = {
+  params: Promise<{
+    symbol: string;
+  }>;
+};
 
   //
   type StockData = {

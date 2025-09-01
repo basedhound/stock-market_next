@@ -223,8 +223,8 @@
   .search-list {
     @apply !bg-gray-800 max-h-[400px];
   }
-  .search-list-indicator {
-    @apply py-6 text-center text-gray-500;
+  .search-list-empty {
+    @apply py-6 !bg-transparent text-center text-gray-500;
   }
   .search-input {
     @apply !bg-gray-800 border-0 text-gray-400 placeholder:text-gray-500 focus:ring-0 text-base h-14 px-4 pr-10;
@@ -233,13 +233,28 @@
     @apply absolute right-12 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500 animate-spin;
   }
   .search-count {
-    @apply px-4 py-2 text-sm font-medium text-gray-400 bg-gray-700;
+    @apply py-2 px-4 text-sm font-medium text-gray-400 bg-gray-700 border-b border-gray-700;
   }
   .search-item {
-    @apply px-4 py-3 hover:bg-gray-600 cursor-pointer border-b border-gray-600 last:border-b-0 transition-colors flex items-center gap-3;
+    @apply rounded-none w-full data-[selected=true]:bg-gray-600;
+  }
+  .search-item-link {
+    @apply px-2 w-full cursor-pointer border-b border-gray-600 last:border-b-0 transition-colors flex items-center gap-3;
+  }
+  .search-item-name {
+    @apply font-medium text-base text-gray-400;
   }
   .nav-list {
     @apply flex flex-col sm:flex-row p-2 gap-3 sm:gap-10 font-medium;
+  }
+  .stock-details-container {
+    @apply w-full grid-cols-1 gap-6 xl:grid-cols-3 space-y-6 sm:space-y-8;
+  }
+  .watchlist-btn {
+    @apply bg-yellow-500 text-base hover:bg-yellow-500 text-gray-900 w-full rounded h-11 font-semibold cursor-pointer;
+  }
+    .watchlist-remove {
+    @apply bg-red-500! hover:bg-red-500! text-gray-900!
   }
 }
 
