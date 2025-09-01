@@ -7,6 +7,9 @@ import {
   CommandDialog,
   CommandInput,
   CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
 } from '@/components/ui/command';
 
 import { Button } from './ui/button';
@@ -70,9 +73,9 @@ export const SearchCommand = ({
 
         <CommandList className='search-list'>
           {loading ? (
-            <div className='search-list-indicator'>
+            <CommandEmpty className='search-list-empty'>
               Loading stocks...
-            </div>
+            </CommandEmpty>
           ) : displayStocks?.length === 0 ? (
             <div className='search-list-indicator'>
               {isSearchMode
@@ -80,21 +83,21 @@ export const SearchCommand = ({
                 : 'No stocks available'}
             </div>
           ) : (
-            <ul>
+            <CommandGroup className='!px-0'>
               <div className='search-count'>
                 {isSearchMode ? 'Search Results' : 'Popular Stocks'} (
                 {displayStocks?.length || 0})
               </div>
               {displayStocks?.map((stock, i) => (
-                <li key={stock.symbol + i}>
+                <CommandItem key={stock.symbol + i} className='search-item'>
                   <Link
                     href={`/stocks/${stock.symbol}`}
                     onClick={handleSelectStock}
-                    className='search-item'
+                    className='search-item-link'
                   >
                     <TrendingUp className='h-4 w-4 text-gray-500' />
                     <div className='flex-1'>
-                      <div className='font-medium text-gray-400'>
+                      <div className='search-item-name'>
                         {stock.name}
                       </div>
                       <div className='text-sm text-gray-500'>
@@ -103,9 +106,9 @@ export const SearchCommand = ({
                     </div>
                     Watchlist
                   </Link>
-                </li>
+                </CommandItem>
               ))}
-            </ul>
+            </CommandGroup>
           )}
         </CommandList>
       </CommandDialog>
