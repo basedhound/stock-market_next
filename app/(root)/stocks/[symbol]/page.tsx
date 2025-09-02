@@ -1,5 +1,8 @@
+import { notFound } from 'next/navigation';
 import { TradingViewWidget } from "@/components/TradingViewWidget";
 import { WatchlistButton } from "@/components/WatchlistButton";
+import { getStocksDetails } from "@/lib/actions/finnhub.actions";
+import { getUserWatchlist } from "@/lib/actions/watchlist.actions";
 import {
   BASELINE_WIDGET_CONFIG,
   CANDLE_CHART_WIDGET_CONFIG,
@@ -11,6 +14,15 @@ import {
 
 const StockDetails = async ({ params }: StockDetailsPageProps) => {
   const { symbol } = await params;
+
+  const stockData = await getStocksDetails(symbol.toUpperCase());
+  const watchlist = await getUserWatchlist();
+
+  const isInWatchlist = watchlist.some(
+    (item) => item.symbol === symbol.toUpperCase()
+  );
+
+  if (!stockData) notFound();
 
   return (
     <div className="grid stock-details-container">
@@ -36,7 +48,12 @@ const StockDetails = async ({ params }: StockDetailsPageProps) => {
       </section>
       <section className="lg:col-span-1 flex flex-col gap-6 w-full">
         {/* Watchlist Button */}
-        <WatchlistButton />
+        <WatchlistButton
+          symbol={symbol}
+          company={stockData.company}
+          isInWatchlist={isInWatchlist}
+          type='button'
+        />
 
         {/* Technical Analysis */}
         <TradingViewWidget

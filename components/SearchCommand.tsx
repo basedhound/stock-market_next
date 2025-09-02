@@ -13,6 +13,9 @@ import {
 } from '@/components/ui/command';
 
 import { Button } from './ui/button';
+import { searchStocks } from '@/lib/actions/finnhub.actions';
+import { useDebounce } from '@/hooks/useDebounce';
+import { WatchlistButton } from './WatchlistButton';
 
 export const SearchCommand = ({
   renderAs = 'button',
@@ -40,14 +43,57 @@ export const SearchCommand = ({
     return () => document.removeEventListener('keydown', handler);
   }, []);
 
+  // Run search query if user typed input, otherwise reset to initial stocks
+  const handleSearch = async () => {
+    if (!isSearchMode) return setStocks(initialStocks);
+
+    setLoading(true);
+    try {
+      const results = await searchStocks(searchTerm.trim());
+      setStocks(results);
+    } catch {
+      setStocks([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const debouncedSearch = useDebounce(handleSearch, 300);
+  // Trigger debounced search when search term changes
+  useEffect(() => {
+    debouncedSearch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm]);
+
+  // Reset search state when dialog closes
+  useEffect(() => {
+    if (!open) {
+      setSearchTerm('');
+      setStocks(initialStocks);
+    }
+  }, [open, initialStocks]);
+
+  // Close dialog and reset state after user selects a stock
   const handleSelectStock = () => {
-    console.log("Select stock")
+    setOpen(false);
+    setSearchTerm('');
+    setStocks(initialStocks);
+  };
+
+  // Handle watchlist changes status change
+  const handleWatchlistChange = async (symbol: string, isAdded: boolean) => {
+    // Update current stocks
+    setStocks(
+      initialStocks?.map((stock) =>
+        stock.symbol === symbol ? { ...stock, isInWatchlist: isAdded } : stock
+      ) || []
+    );
   };
 
   return (
     <>
       {renderAs === 'text' ? (
-        <span onClick={() => setOpen(true)} className='search-text '>
+        <span onClick={() => setOpen(true)} className='search-text'>
           {label}
         </span>
       ) : (
@@ -71,17 +117,15 @@ export const SearchCommand = ({
           {loading && <Loader2 className='search-loader' />}
         </div>
 
-        <CommandList className='search-list'>
+        <CommandList className='search-list scrollbar-hide-default'>
           {loading ? (
-            <CommandEmpty className='search-list-empty'>
-              Loading stocks...
-            </CommandEmpty>
+            <div className='search-list-indicator'>Loading stocks...</div>
           ) : displayStocks?.length === 0 ? (
-            <div className='search-list-indicator'>
+            <CommandEmpty className='search-list-empty'>
               {isSearchMode
                 ? `No results found for "${searchTerm}"`
                 : 'No stocks available'}
-            </div>
+            </CommandEmpty>
           ) : (
             <CommandGroup className='!px-0'>
               <div className='search-count'>
@@ -97,14 +141,17 @@ export const SearchCommand = ({
                   >
                     <TrendingUp className='h-4 w-4 text-gray-500' />
                     <div className='flex-1'>
-                      <div className='search-item-name'>
-                        {stock.name}
-                      </div>
+                      <div className='search-item-name'>{stock.name}</div>
                       <div className='text-sm text-gray-500'>
                         {stock.symbol} • {stock.exchange} • {stock.type}
                       </div>
                     </div>
-                    Watchlist
+                    <WatchlistButton
+                      symbol={stock.symbol}
+                      company={stock.name}
+                      isInWatchlist={stock.isInWatchlist}
+                      onWatchlistChange={handleWatchlistChange}
+                    />
                   </Link>
                 </CommandItem>
               ))}

@@ -44,33 +44,6 @@ export const getDateRange = (days: number) => {
   };
 };
 
-// Get today's date range (from today to today)
-export const getTodayDateRange = () => {
-  const today = new Date();
-  const todayString = today.toISOString().split('T')[0];
-  return {
-    to: todayString,
-    from: todayString,
-  };
-};
-
-// Calculate news per symbol based on watchlist size
-export const calculateNewsDistribution = (symbolsCount: number) => {
-  let itemsPerSymbol: number;
-  let targetNewsCount = 6;
-  
-  if (symbolsCount < 3) {
-    itemsPerSymbol = 3; // Fewer symbols, more news each
-  } else if (symbolsCount === 3) {
-    itemsPerSymbol = 2; // Exactly 3 symbols, 2 news each = 6 total
-  } else {
-    itemsPerSymbol = 1; // Many symbols, 1 news each
-    targetNewsCount = 6; // Don't exceed 6 total
-  }
-  
-  return { itemsPerSymbol, targetNewsCount };
-};
-
 // Check for required article fields
 export const validateArticle = (article: RawNewsArticle) =>
   article.headline && article.summary && article.url && article.datetime;
@@ -122,7 +95,6 @@ export const formatDateToday = new Date().toLocaleDateString('en-US', {
   day: 'numeric',
   timeZone: 'UTC',
 });
-
 
 export const getAlertText = (alert: Alert) => {
   const condition = alert.alertType === 'upper' ? '>' : '<';

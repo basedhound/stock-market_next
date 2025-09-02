@@ -2,7 +2,7 @@ declare global {
   type SignInFormData = {
     email: string;
     password: string;
-  }
+  };
 
   type SignUpFormData = {
     fullName: string;
@@ -98,10 +98,60 @@ declare global {
   };
 
   type StockDetailsPageProps = {
-  params: Promise<{
+    params: Promise<{
+      symbol: string;
+    }>;
+  };
+
+  type WatchlistButtonProps = {
     symbol: string;
-  }>;
-};
+    company: string;
+    isInWatchlist: boolean;
+    showTrashIcon?: boolean;
+    type?: 'button' | 'icon';
+    onWatchlistChange?: (symbol: string, isAdded: boolean) => void;
+  };
+
+  type QuoteData = {
+    c?: number;
+    dp?: number;
+  };
+
+  type ProfileData = {
+    name?: string;
+    marketCapitalization?: number;
+  };
+
+  type FinancialsData = {
+    metric?: { [key: string]: number };
+  };
+
+  type SelectedStock = {
+    symbol: string;
+    company: string;
+    currentPrice?: number;
+  };
+
+    type WatchlistTableProps = {
+    watchlist: StockWithData[];
+  };
+
+  type StockWithData = {
+    userId: string;
+    symbol: string;
+    company: string;
+    addedAt: Date;
+    currentPrice?: number;
+    changePercent?: number;
+    priceFormatted?: string;
+    changeFormatted?: string;
+    marketCap?: string;
+    peRatio?: string;
+  };
+
+  type AlertsListProps = {
+  stocks: Alert[];
+}
 
   //
   type StockData = {
@@ -142,10 +192,7 @@ declare global {
   };
 
   type WatchlistNewsProps = {
-    watchlistSymbols?: string[]; // Array of stock symbols to fetch news for
-    watchlistStocks?: StockWithData[]; // Array of watchlist stocks with full data
-    articlesPerStock?: number; // Number of articles per stock
-    initialNews?: MarketNewsArticle[]; // Initial news data
+    news?: MarketNewsArticle[]; 
   };
 
   type SearchCommandProps = {
@@ -159,34 +206,25 @@ declare global {
 
   type AlertFormData = {
     alertName: string;
-    alertType: 'price' | 'volume';
+    alertType: 'upper' | 'lower';
     condition: 'greater' | 'less';
     threshold: string;
   };
 
   type AlertData = {
-    alertName: string;
     symbol: string;
-    alertType: 'price' | 'volume';
-    condition: 'greater' | 'less';
-    threshold: number;
+    company: string;
+    alertName: string;
+    alertType: 'upper' | 'lower';
+    threshold: string;
   };
 
   type AlertModalProps = {
-    isOpen: boolean;
-    onClose: () => void;
-    symbol: string;
-    company: string;
-    currentPrice?: number;
     alertId?: string;
-    onCreateAlert?: (alertData: AlertData) => Promise<void>;
-    initialValues?: {
-      alertName?: string;
-      alertType?: 'price' | 'volume';
-      condition?: 'greater' | 'less';
-      threshold?: number;
-    };
+    initialData?: AlertData;
     action?: string;
+    open: boolean;
+    setOpen: (open: boolean) => void;
   };
 
   type RecommendationData = {
@@ -209,49 +247,6 @@ declare global {
     image?: string;
     category?: string;
     related?: string;
-  };
-
-  type StockDetailsData = {
-    // Basic Information
-    symbol: string;
-    company: string;
-    exchange: string;
-    currency: string;
-    country: string;
-
-    // Price Information
-    currentPrice: number;
-    previousClose: number;
-    dayHigh: number;
-    dayLow: number;
-    openPrice: number;
-
-    // Calculated Metrics
-    changeAmount: number;
-    changePercent: number;
-    priceFormatted: string;
-    changeFormatted: string;
-    changeAmountFormatted: string;
-
-    // Company Information
-    marketCap: number;
-    marketCapFormatted: string;
-    sharesOutstanding: number;
-
-    // Additional Data
-    industry: string;
-    website: string;
-    logo: string;
-    ipo: string;
-    phone: string;
-
-    // Financial Metrics
-    peRatio: string;
-    eps: string;
-    sentiment: string;
-
-    // Metadata
-    lastUpdated: string;
   };
 
   type StockDetailsProps = {
@@ -280,23 +275,6 @@ declare global {
     threshold: number;
     changePercent?: number;
     frequency: string;
-  };
-
-  type StockWithData = {
-    _id: string;
-    userId: string;
-    symbol: string;
-    company: string;
-    addedAt: Date;
-    currentPrice?: number;
-    changePercent?: number;
-    changeAmount?: number;
-    priceFormatted?: string;
-    changeFormatted?: string;
-    changeAmountFormatted?: string;
-    marketCap?: string;
-    peRatio?: string;
-    tradingViewSymbol?: string;
   };
 }
 

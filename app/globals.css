@@ -212,7 +212,7 @@
     @apply cursor-pointer hover:text-yellow-500;
   }
    .search-btn {
-    @apply px-4 py-2 w-fit flex items-center gap-2 text-sm md:text-base bg-yellow-500 text-black font-medium rounded;
+    @apply cursor-pointer px-4 py-2 w-fit flex items-center gap-2 text-sm md:text-base bg-yellow-500 hover:bg-yellow-500 text-black font-medium rounded;
   }
   .search-dialog {
     @apply !bg-gray-800 lg:min-w-[800px] border-gray-600 fixed top-10 left-1/2 -translate-x-1/2 translate-y-10;
@@ -253,8 +253,95 @@
   .watchlist-btn {
     @apply bg-yellow-500 text-base hover:bg-yellow-500 text-gray-900 w-full rounded h-11 font-semibold cursor-pointer;
   }
-    .watchlist-remove {
+  .watchlist-remove {
     @apply bg-red-500! hover:bg-red-500! text-gray-900!
+  }
+  .watchlist-empty-container {
+    @apply container gap-8 flex-col items-center md:mt-10 p-6 text-center;
+  }
+  .watchlist-empty {
+    @apply flex flex-col items-center justify-center text-center;
+  }
+  .watchlist-star {
+    @apply h-16 w-16 text-gray-500 mb-4;
+  }
+  .empty-title {
+    @apply text-xl font-semibold text-gray-400 mb-2;
+  }
+  .empty-description {
+    @apply text-gray-500 mb-6 max-w-md;
+  }
+  .watchlist-container {
+    @apply grid grid-cols-1 lg:grid-cols-3 gap-8;
+  }
+  .watchlist {
+    @apply lg:col-span-2 space-y-8;
+  }
+  .watchlist-alerts {
+    @apply items-start h-full lg:col-span-1;
+  }
+  .watchlist-icon-btn {
+    @apply w-fit cursor-pointer hover:bg-transparent! text-gray-400 hover:text-yellow-500;
+  }
+  .watchlist-icon-added {
+    @apply !text-yellow-500 hover:!text-yellow-600;
+  }
+  .watchlist-icon {
+    @apply w-8 h-8 rounded-full flex items-center justify-center bg-gray-700/50;
+  }
+  .trash-icon {
+    @apply h-4 w-4 text-gray-400 hover:text-red-400;
+  }
+  .star-icon {
+    @apply h-4 w-4;
+  }
+  .watchlist-title {
+    @apply text-xl md:text-2xl font-bold text-gray-100;
+  }
+  .watchlist-table {
+    @apply !relative !overflow-hidden !w-full bg-gray-800 border border-gray-600 !rounded-lg;
+  }
+  .table-header-row {
+    @apply text-gray-400 font-medium bg-gray-700 border-b border-gray-600 hover:bg-gray-700;
+  }
+  .table-header:first-child {
+    @apply pl-4;
+  }
+  .table-row {
+    @apply border-b cursor-pointer text-gray-100 border-gray-600 hover:bg-gray-700/50 transition-colors;
+  }
+  .table-cell {
+    @apply font-medium text-base
+  }
+  .add-alert {
+    @apply flex text-sm items-center whitespace-nowrap gap-1.5 px-3 w-fit py-2 text-yellow-600 border border-yellow-600/20 rounded font-medium bg-transparent hover:bg-transparent cursor-pointer transition-colors;
+  }
+  .watchlist-news {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  }
+  .news-item {
+    @apply bg-gray-800 rounded-lg border w-full border-gray-600  p-4 duration-200 hover:border-gray-600 cursor-pointer;
+  }
+  .news-tag {
+    @apply inline-block w-fit px-2 py-1 mb-5 rounded bg-gray-600/60 text-green-500 text-sm font-mono font-medium;
+  }
+  .news-title {
+    @apply text-lg  font-semibold text-gray-100 leading-tight mb-3 line-clamp-2;
+  }
+  .news-meta {
+    @apply flex items-center text-sm text-gray-500 mb-1;
+  }
+  .news-summary {
+    @apply text-gray-400 flex-1 text-base leading-relaxed mb-3 line-clamp-3;
+  }
+  .news-cta {
+    @apply text-sm align-bottom text-yellow-500 hover:text-gray-400;
+  }
+  .alert-dialog {
+    @apply bg-gray-800 border-gray-600 text-gray-400 max-w-md;
+  }
+  .alert-title {
+    @apply text-xl font-semibold text-gray-100
   }
 }
 
