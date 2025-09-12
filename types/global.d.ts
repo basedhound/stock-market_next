@@ -132,7 +132,7 @@ declare global {
     currentPrice?: number;
   };
 
-    type WatchlistTableProps = {
+  type WatchlistTableProps = {
     watchlist: StockWithData[];
   };
 
@@ -150,33 +150,7 @@ declare global {
   };
 
   type AlertsListProps = {
-  stocks: Alert[];
-}
-
-  //
-  type StockData = {
-    symbol: string;
-    company: string;
-    price: string;
-    change: string;
-    marketCap: string;
-    peRatio: string;
-    eps: string;
-    sentiment: string;
-  };
-
-  type PaginationInfo = {
-    currentPage: number;
-    totalPages: number;
-    totalItems: number;
-    itemsPerPage: number;
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-  };
-
-  type StocksResponse = {
-    data: StockData[];
-    pagination: PaginationInfo;
+    alertData: Alert[] | undefined;
   };
 
   type MarketNewsArticle = {
@@ -188,11 +162,11 @@ declare global {
     datetime: number;
     category: string;
     related: string;
-    image: string;
+    image?: string;
   };
 
   type WatchlistNewsProps = {
-    news?: MarketNewsArticle[]; 
+    news?: MarketNewsArticle[];
   };
 
   type SearchCommandProps = {
@@ -202,13 +176,6 @@ declare global {
     buttonLabel?: string;
     buttonVariant?: 'primary' | 'secondary';
     className?: string;
-  };
-
-  type AlertFormData = {
-    alertName: string;
-    alertType: 'upper' | 'lower';
-    condition: 'greater' | 'less';
-    threshold: string;
   };
 
   type AlertData = {
@@ -221,20 +188,10 @@ declare global {
 
   type AlertModalProps = {
     alertId?: string;
-    initialData?: AlertData;
+    alertData?: AlertData;
     action?: string;
     open: boolean;
     setOpen: (open: boolean) => void;
-  };
-
-  type RecommendationData = {
-    strongBuy: number;
-    buy: number;
-    hold: number;
-    sell: number;
-    strongSell: number;
-    period: string;
-    symbol: string;
   };
 
   type RawNewsArticle = {
@@ -249,32 +206,15 @@ declare global {
     related?: string;
   };
 
-  type StockDetailsProps = {
-    symbol: string | null;
-    onClose: () => void;
-    open: boolean;
-  };
-
-  type UserForNewsEmail = {
-    id: string;
-    email: string;
-    name: string;
-    country: string;
-    investmentGoals?: string;
-    riskTolerance?: string;
-    preferredIndustry?: string;
-  };
-
   type Alert = {
     id: string;
     symbol: string;
     company: string;
     alertName: string;
     currentPrice: number;
-    alertType: 'upper' | 'lower' | 'volume';
+    alertType: 'upper' | 'lower';
     threshold: number;
     changePercent?: number;
-    frequency: string;
   };
 }
 

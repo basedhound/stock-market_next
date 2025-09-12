@@ -6,11 +6,10 @@ export interface Alert extends Document {
   symbol: string;
   company: string;
   alertName: string;
-  alertType: 'upper' | 'lower' | 'volume';
+  alertType: 'upper' | 'lower';
   threshold: number;
   isActive: boolean;
   createdAt: Date;
-  lastTriggered?: Date;
   lastSent?: Date;
 }
 
@@ -46,7 +45,7 @@ const AlertSchema = new Schema<Alert>({
   alertType: {
     type: String,
     required: true,
-    enum: ['upper', 'lower', 'volume']
+    enum: ['upper', 'lower']
   },
   threshold: {
     type: Number,
@@ -59,10 +58,6 @@ const AlertSchema = new Schema<Alert>({
   createdAt: {
     type: Date,
     default: Date.now
-  },
-  lastTriggered: {
-    type: Date,
-    default: null
   },
   lastSent: {
     type: Date,

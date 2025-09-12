@@ -1,5 +1,5 @@
 import { inngest } from "./client";
-import { sendNewsSummaryEmail, sendWelcomeEmail } from "../nodemailer";
+import { sendNewsSummaryEmail, sendPriceAlertEmail, sendWelcomeEmail } from "../nodemailer";
 import { getAllUsersForNewsEmail } from "../actions/user.actions";
 import { getNews } from "../actions/finnhub.actions";
 import { getWatchlistSymbolsByEmail } from "../actions/watchlist.actions";
@@ -146,6 +146,70 @@ export const sendDailyNewsSummary = inngest.createFunction(
     return {
       success: true,
       message: "Daily news summary emails sent successfully",
+    };
+  }
+);
+
+// Send price alert email when threshold is triggered
+export const sendPriceAlert = inngest.createFunction(
+  { id: 'send-price-alert' },
+  { event: 'alert/price.triggered' },
+  async ({ event, step }) => {
+    const {
+      userEmail,
+      symbol,
+      company,
+      alertType,
+      alertName,
+      thresholdValue,
+      currentValue,
+    } = event.data;
+
+    // Step 1: Format price values
+    const priceData = await step.run('format-price-data', async () => {
+      try {
+        const formattedPrice = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(currentValue);
+
+        const formattedThreshold = new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }).format(thresholdValue);
+
+        return { formattedPrice, formattedThreshold };
+      } catch (error) {
+        console.error('Error formatting price data:', error);
+        return {
+          formattedPrice: `$${currentValue.toFixed(2)}`,
+          formattedThreshold: `$${thresholdValue.toFixed(2)}`,
+        };
+      }
+    });
+
+    // Step 2: Send price alert email
+    await step.run('send-alert-email', async () => {
+      const { formattedPrice, formattedThreshold } = priceData;
+      
+      if (!['upper', 'lower'].includes(alertType)) {
+        throw new Error(`Unsupported alert type: ${alertType}`);
+      }
+
+      return await sendPriceAlertEmail({
+        email: userEmail,
+        symbol,
+        company,
+        alertType: alertType as 'upper' | 'lower',
+        alertName,
+        currentPrice: formattedPrice,
+        thresholdPrice: formattedThreshold,
+      });
+    });
+
+    return {
+      success: true,
+      message: `Price alert email sent for ${symbol}`,
     };
   }
 );

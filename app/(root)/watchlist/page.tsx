@@ -4,12 +4,15 @@ import { SearchCommand } from "@/components/SearchCommand";
 import { getWatchlistWithData } from "@/lib/actions/watchlist.actions";
 import { WatchlistTable } from "@/components/WatchlistTable";
 import { WatchlistNews } from "@/components/WatchlistNews";
+import { getUserAlerts } from "@/lib/actions/alert.actions";
+import { AlertList } from "@/components/AlertsList";
 
 const Watchlist = async () => {
   const watchlist = await getWatchlistWithData();
   const initialStocks = await searchStocks();
   const symbols = watchlist.map((item) => item.symbol);
   const news = await getNews(symbols);
+  const alerts = await getUserAlerts();
 
   // Empty state
   if (watchlist.length === 0) {
@@ -47,7 +50,7 @@ const Watchlist = async () => {
 
       <section className="flex watchlist-alerts">
         <h2 className="text-2xl font-bold text-gray-100">Alerts</h2>
-        {/* AlertsList */}
+        <AlertList alertData={alerts} />
       </section>
     </div>
   );

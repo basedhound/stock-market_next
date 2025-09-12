@@ -12,11 +12,24 @@ import { WATCHLIST_TABLE_HEADER } from "@/lib/constants";
 import { Button } from "./ui/button";
 import { WatchlistButton } from "./WatchlistButton";
 import { useRouter } from "next/navigation";
-import { getChangeColorClass } from "@/lib/utils";
-import { cn } from "@/lib/utils";
+import { cn, getChangeColorClass } from "@/lib/utils";
+import { useState } from "react";
+import { AlertModal } from "./AlertModal";
 
 export function WatchlistTable({ watchlist }: WatchlistTableProps) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [selectedStock, setSelectedStock] = useState<StockWithData | null>(
+    null
+  );
+
+  const handleAlertClick = (e: React.MouseEvent, stock: StockWithData) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setSelectedStock(stock);
+    setOpen(true);
+  };
 
   return (
     <>
@@ -57,7 +70,11 @@ export function WatchlistTable({ watchlist }: WatchlistTableProps) {
                 {item.peRatio || "—"}
               </TableCell>
               <TableCell>
-                <Button className="add-alert">Add Alert</Button>
+                <Button
+                  className="add-alert"
+                  onClick={(e) => handleAlertClick(e, item)}>
+                  Add Alert
+                </Button>
               </TableCell>
               <TableCell>
                 <WatchlistButton
@@ -72,7 +89,20 @@ export function WatchlistTable({ watchlist }: WatchlistTableProps) {
         </TableBody>
       </Table>
 
-      {/* AlertModal*/}
+      {open && (
+        <AlertModal
+          open={open}
+          setOpen={setOpen}
+          alertData={{
+            symbol: selectedStock?.symbol || "",
+            company: selectedStock?.company || "",
+            alertName: "",
+            alertType: "upper",
+            threshold: selectedStock?.currentPrice?.toString() || "",
+          }}
+          action="create"
+        />
+      )}
     </>
   );
 }

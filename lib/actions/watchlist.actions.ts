@@ -3,9 +3,10 @@
 import mongoose from "mongoose";
 import Watchlist, { WatchlistItem } from "@/database/models/watchlist.model";
 import { connectToDatabase } from "@/database/mongoose";
-import { getCurrentUser } from './user.actions';
+import { getCurrentUser } from "./user.actions";
 import { revalidatePath } from "next/cache";
 import { getStocksDetails } from "./finnhub.actions";
+import AlertModel from "@/database/models/alert.model";
 
 // Get watchlist symbols for a specific user by email
 export async function getWatchlistSymbolsByEmail(
@@ -38,40 +39,37 @@ export async function getWatchlistSymbolsByEmail(
 }
 
 // Add stock to watchlist
-export const addToWatchlist = async (
-  symbol: string, 
-  company: string,
-) => {
+export const addToWatchlist = async (symbol: string, company: string) => {
   try {
     await connectToDatabase();
     const user = await getCurrentUser();
-    
+
     // Check if stock already exists in watchlist
     const existingItem = await Watchlist.findOne({
       userId: user.id,
-      symbol: symbol.toUpperCase()
+      symbol: symbol.toUpperCase(),
     });
-    
+
     if (existingItem) {
-      return { success: false, error: 'Stock already in watchlist' };
+      return { success: false, error: "Stock already in watchlist" };
     }
-    
+
     // Add to watchlist
     const newItem = new Watchlist({
       userId: user.id,
       symbol: symbol.toUpperCase(),
-      company: company.trim()
+      company: company.trim(),
     });
-    
+
     await newItem.save();
-    revalidatePath('/watchlist');
-    
-    return { success: true, message: 'Stock added to watchlist' };
+    revalidatePath("/watchlist");
+
+    return { success: true, message: "Stock added to watchlist" };
   } catch (error) {
-    console.error('Error adding to watchlist:', error);
-    throw new Error('Failed to add stock to watchlist');
+    console.error("Error adding to watchlist:", error);
+    throw new Error("Failed to add stock to watchlist");
   }
-}
+};
 
 // Remove stock from watchlist
 export async function removeFromWatchlist(symbol: string) {
@@ -80,19 +78,31 @@ export async function removeFromWatchlist(symbol: string) {
     const user = await getCurrentUser();
 
     // Remove from watchlist
-     await Watchlist.deleteOne({
+    await Watchlist.deleteOne({
       userId: user.id,
       symbol: symbol.toUpperCase(),
     });
-    revalidatePath('/watchlist');
 
-    return { success: true, message: 'Stock removed from watchlist' };
+    // Also delete all alerts for this symbol and user
+    await AlertModel.updateMany(
+      {
+        userId: user.id,
+        symbol: symbol.toUpperCase(),
+        isActive: true,
+      },
+      {
+        $set: { isActive: false },
+      }
+    );
+
+    revalidatePath("/watchlist");
+
+    return { success: true, message: "Stock removed from watchlist" };
   } catch (error) {
-    console.error('Error removing from watchlist:', error);
-    throw new Error('Failed to remove stock from watchlist');
+    console.error("Error removing from watchlist:", error);
+    throw new Error("Failed to remove stock from watchlist");
   }
 }
-
 
 // Get user's watchlist
 export async function getUserWatchlist(): Promise<WatchlistItem[]> {
@@ -106,8 +116,8 @@ export async function getUserWatchlist(): Promise<WatchlistItem[]> {
 
     return JSON.parse(JSON.stringify(watchlist));
   } catch (error) {
-    console.error('Error fetching watchlist:', error);
-    throw new Error('Failed to fetch watchlist');
+    console.error("Error fetching watchlist:", error);
+    throw new Error("Failed to fetch watchlist");
   }
 }
 
@@ -147,7 +157,7 @@ export async function getWatchlistWithData(): Promise<StockWithData[]> {
 
     return JSON.parse(JSON.stringify(stocksWithData));
   } catch (error) {
-    console.error('Error loading watchlist:', error);
-    throw new Error('Failed to fetch watchlist');
+    console.error("Error loading watchlist:", error);
+    throw new Error("Failed to fetch watchlist");
   }
 }
